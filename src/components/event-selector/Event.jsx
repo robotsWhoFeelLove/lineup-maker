@@ -16,18 +16,18 @@ function Event({ event }) {
   };
 
   return (
-    <button
-      className={"btn  min-h-fit  p-2 " + (schedule.includes(event) ? " btn-primary " : " btn-neutral")}
+    <div
+      className={"btn h-20 gap-1  p-2 " + (schedule.includes(event) ? " btn-primary " : " btn-neutral")}
       onClick={() => {
         handleSchedule(event);
       }}
     >
-      <div className="flex flex-col gap-1">
-        <div className="font-bold text-md">{event.Name}</div>
+      <div className="flex flex-col gap-1 min-h-fit">
+        <div className="font-bold text-md grow">{event.Name}</div>
         <div>{getDisplayDate(event.DateTime)}</div>
         <div>{event.Venue}</div>
       </div>
-    </button>
+    </div>
   );
 }
 
