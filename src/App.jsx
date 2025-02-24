@@ -20,6 +20,8 @@ import ShareModal from "./components/share-schedule/ShareModal";
 import GridSchedule from "./components/grid-calendar/GridSchedule";
 import EventGrid from "./components/EventGrid";
 import { shareSchedule } from "./services/sharingServices";
+import SchedulePosterToggle from "./components/utils/SchedulePosterTabs";
+import EventPoster from "./components/EventPoster";
 
 function App() {
   const setScheduleByEids = useEventStore((state) => state.setScheduleByEids);
@@ -31,6 +33,7 @@ function App() {
   const [searchParams, setSearchParams] = useSearchParams();
   const queryParams = new URLSearchParams(location.search);
   const scheduleQuery = queryParams.get("schedule");
+  const scheduleType = useEventStore((state) => state.scheduleView);
   console.log({ scheduleQuery });
 
   //const schedule = useEventStore((state) => state.events);
@@ -70,12 +73,22 @@ function App() {
       <main className=" mb-auto ">
         {currentPage == "selector" && <EventSelector events={events} />}
         {/* {currentPage == "schedule" && <EventSchedule />} */}
-        {currentPage == "schedule" && <EventGrid />}
+        {currentPage == "schedule" && scheduleType == "schedule" && <EventGrid />}
+        {currentPage == "schedule" && scheduleType == "poster" && <EventPoster />}
       </main>
       <footer>
-        <div className="md:hidden fixed bottom-[60px]">
-          {schedule && schedule.length > 0 && <ShareButton />}
-          <DayTabs daysArr={currentPage == "selector" ? getDaysFromArr(events) : getDaysFromArr(schedule)} />
+        <div className=" fixed bottom-[60px]">
+          {schedule && schedule.length > 0 && (
+            <>
+              <div className="flex justify-end">
+                {currentPage == "schedule" && <SchedulePosterToggle />}
+                <ShareButton />
+              </div>
+            </>
+          )}
+          <div className="md:hidden">
+            <DayTabs daysArr={currentPage == "selector" ? getDaysFromArr(events) : getDaysFromArr(schedule)} />
+          </div>
         </div>
         <BottomNav />
       </footer>

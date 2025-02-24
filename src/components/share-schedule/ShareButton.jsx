@@ -7,8 +7,8 @@ function ShareButton() {
   };
 
   return (
-    <div className="w-screen flex justify-end">
-      <div onClick={handleShareModal} className=" bg-neutral border-none rounded-b-none h-8 px-2 rounded-t-lg">
+    <div className=" flex justify-end">
+      <div onClick={handleShareModal} className=" bg-neutral border-none rounded-b-none h-8 px-2 rounded-tr-lg">
         <ShareIcon />
       </div>
     </div>

@@ -26,7 +26,7 @@ function Day({ currentDay }) {
     <>
       {events.length > 0 && (
         <>
-          <div className="">
+          <div className="w-full grow">
             <h2 className="fixed z-50 w-full border mt-0 mb-8 text-neutral-content w-full">{getDayString(currentDay)}</h2>
             <div className="pt-10  mb-40 bg-inherit w-full">
               <div className=" flex flex-col gap-2 overflow-scroll pb-40 px-2 w-full pt-4">

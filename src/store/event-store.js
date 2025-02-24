@@ -8,9 +8,15 @@ export const useEventStore = create((set) => ({
   currentDay: new Date(1900, 1, 1),
   currentPage: "selector",
   dayWidth: 500,
+  scheduleView: "schedule",
   setDayWidth: () => {
     set(() => ({
       dayWidth: window.innerWidth < 500 ? window.innerWidth : (window.innerWidth - 65) / getDays().length,
+    }));
+  },
+  setScheduleView: (newScheduleView) => {
+    set(() => ({
+      scheduleView: newScheduleView,
     }));
   },
   setCurrentPage: (newPage) => {
