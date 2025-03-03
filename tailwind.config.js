@@ -45,7 +45,7 @@ export default {
       "sunset",
     ],
   },
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"), require("tailwindcss-animated")],
 
   // use below if you need animation package.
   // run this in terminal: npm install -D tailwindcss-animated

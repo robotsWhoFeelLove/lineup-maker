@@ -3,6 +3,7 @@ import download from "downloadjs";
 import saveAs from "file-saver";
 import * as htmlToImage from "html-to-image";
 import html2canvas from "html2canvas-pro";
+import { useEventStore } from "../store/event-store";
 
 export async function shareSchedule() {
   const url = window.location;
@@ -41,25 +42,26 @@ export async function createBlob(item, callback) {
   //   node.innerHTML = "";
 }
 
-export async function createPoster(posterID) {
-  const original = document.getElementById(posterID);
-  const node = original.cloneNode("deep");
-  node.id = posterID + "clone";
-  node.setAttribute("height", 700);
-  node.setAttribute("width", 400);
-  console.log(node);
-  await htmlToImage.toPng(node);
-  await htmlToImage.toPng(node);
-  htmlToImage.toPng(node).then((dataUrl) => {
-    console.log(dataUrl);
-    download(dataUrl, "Lineup.png");
-  });
-}
+// export async function createPoster(posterID) {
+//   const original = document.getElementById(posterID);
+//   const node = original.cloneNode("deep");
+//   node.id = posterID + "clone";
+//   node.setAttribute("height", 700);
+//   node.setAttribute("width", 400);
+//   console.log(node);
+//   await htmlToImage.toPng(node);
+//   await htmlToImage.toPng(node);
+//   htmlToImage.toPng(node).then((dataUrl) => {
+//     console.log(dataUrl);
+//     download(dataUrl, "Lineup.png");
+//   });
+// }
 
-export function createPoster5(posterID) {
+export async function createPoster5(posterID) {
   const parent = document.getElementById(posterID);
 
-  let node = parent.firstChild.cloneNode(true);
+  let node = document.getElementById("test");
+  node.appendChild(parent.firstChild.cloneNode(true));
   //   if (window.innerWidth < 768) {
   //     node = node.cloneNode(true);
   //   }
@@ -78,8 +80,16 @@ export function createPoster5(posterID) {
     });
   });
   // .then(() => {
-  //   node.innerHTML = "";
+  //   document.getElementById("test").innerHTML = "";
   // });
+
+  // });
+  return "complete";
+}
+
+export async function downloadDesktop(item) {
+  await createPoster5(item);
+  //document.getElementById("test").innerHTML = "";
 }
 export async function createPosterMobile(posterID) {
   const parent = document.getElementById(posterID + "parent");
@@ -102,6 +112,47 @@ export async function createPosterMobile(posterID) {
     test: "Checkout my lineup!",
     files: [file],
   });
+}
+
+export async function createPoster(posterID, containerClass = "") {
+  //const container = document.querySelector("." + containerClass);
+  const parent = document.getElementById(posterID + "parent");
+  console.log({ parent });
+  let node = document.getElementById("test");
+  // console.log(parent.firstChild);
+  if (!parent || !parent.firstChild) return;
+  node.appendChild(document.getElementById(posterID));
+  await htmlToImage.toPng(node);
+  await htmlToImage.toPng(node);
+  let poster = await htmlToImage.toPng(node);
+  //console.log(poster);
+  //   const img = new Image();
+  //   img.src = poster;
+  //container.appendChild(img);
+
+  // const uri = await htmlToImage.toPng(node);
+  node.innerHTML = "";
+  // console.log(img);
+  return poster;
+}
+
+export async function setPosterForDownload(posterID, setter) {
+  const imgFile = await createPoster(posterID);
+  console.log(imgFile);
+  setter(imgFile);
+}
+
+export async function createPosterImageArray(postersArr, containerClass, day, setter) {
+  let i = 0;
+  let tempArr = [];
+  while (i < postersArr.length) {
+    const posterID = "poster" + day.getDay() + postersArr[i].Title;
+    const currentImg = await createPoster(posterID, containerClass);
+    tempArr.push(currentImg);
+    i++;
+  }
+  console.log(tempArr);
+  setter(tempArr);
 }
 
 export function createPoster2(posterId) {
@@ -165,17 +216,34 @@ export function createPoster3(posterId) {
 }
 
 export async function sharePoster(blob) {
+  //const setPosterImg = useEventStore((state) => state.setPosterImg);
   //const filesArr = await convertToBlob(url);
   console.log(blob);
   const filesArr = [new File([blob], "MyLineup.png", { type: blob.type })];
   try {
-    navigator.share({
+    await navigator.share({
       files: filesArr,
     });
     console.log("Shared successfully");
   } catch (err) {
     console.error("error:", err.message);
   }
+  useEventStore.getState().setPosterImg(null);
+}
+
+export async function shareMobileImage(imageURL) {
+  //await fetch(imageURL);
+  fetch(imageURL)
+    .then((res) => {
+      return res.blob();
+    })
+    .then((blob) => {
+      sharePoster(blob);
+    });
+  //   await res.blob();
+  //   await res.blob();
+  //   const blob = await res.blob();
+  //   sharePoster(blob);
 }
 
 export async function shareMobile(item) {

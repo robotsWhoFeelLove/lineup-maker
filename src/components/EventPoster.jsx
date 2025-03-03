@@ -1,5 +1,5 @@
 import { getDays } from "../handlers/dateTimeHandlers";
-import { createPoster5, createPosterMobile, shareMobile } from "../services/sharingServices";
+import { createPoster5, createPosterMobile, downloadDesktop, shareMobile } from "../services/sharingServices";
 import { useEventStore } from "../store/event-store";
 import PosterDay from "./Poster/PosterDay";
 
@@ -16,10 +16,10 @@ function EventPoster() {
         {schedule &&
           schedule.length > 0 &&
           getDays(schedule).map((day) => {
-            return <PosterDay handler={createPoster5} key={"day" + day.getDay()} day={day} />;
+            return <PosterDay handler={downloadDesktop} key={"day" + day.getDay()} day={day} />;
           })}
       </div>
-      <div className="md:hidden flex  overflow-scroll">
+      <div className="md:hidden flex  overflow-scroll poster-container">
         {schedule && schedule.length > 0 && <PosterDay handler={shareMobile} key={"poster" + currentDay.getDay()} day={currentDay} />}
       </div>
     </>

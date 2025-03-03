@@ -10,26 +10,38 @@ import {
   createPoster2,
   createPoster3,
   createPoster5,
+  setPosterForDownload,
 } from "../../services/sharingServices";
 import * as htmlToImage from "html-to-image";
+import { useEventStore } from "../../store/event-store";
 
 function Poster({ poster, schedule, day, handler }) {
+  const setPosterImg = useEventStore((state) => state.setPosterImg);
   let posterID = "poster" + day.getDay() + poster.Title;
   const handleDownload = () => {
     handler(posterID);
   };
 
   return (
-    <div id={posterID + "parent"} className="w-full p-3 pt-0">
-      <div onClick={handleDownload} className="w-full flex justify-end">
+    <div id={posterID + "parent"} className="w-full p-3 pt-0 ">
+      {/* <div onClick={handleDownload} className="w-full flex justify-end">
         <svg className="" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 16L12 2" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           <path d="M8 12L12 16L16 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           <path d="M20 16V22H4V16" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-      </div>
-
-      <div className="w-full" id={posterID}>
+      </div> */}
+      <div className="text-xs">tap poster to generate image</div>
+      <div
+        className="w-full"
+        id={posterID}
+        onClick={() => {
+          console.log("starting");
+          setPosterForDownload("poster" + day.getDay() + poster.Title, setPosterImg);
+          console.log("image-created");
+          document.getElementById("poster-modal").showModal();
+        }}
+      >
         <div
           style={{ color: poster.Text_Color, fontFamily: poster.Font, backgroundColor: poster.BG_Color }}
           className="flex flex-col justify-center w-full max-w-[500px] text-center"

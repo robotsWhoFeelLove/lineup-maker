@@ -9,6 +9,13 @@ export const useEventStore = create((set) => ({
   currentPage: "selector",
   dayWidth: 500,
   scheduleView: "schedule",
+  posterImg: null,
+
+  setPosterImg: (newPosterImg) => {
+    set(() => ({
+      posterImg: newPosterImg,
+    }));
+  },
   setDayWidth: () => {
     set(() => ({
       dayWidth: window.innerWidth < 500 ? window.innerWidth : (window.innerWidth - 65) / getDays().length,

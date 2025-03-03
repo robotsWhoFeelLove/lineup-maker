@@ -19,9 +19,10 @@ import ShareButton from "./components/share-schedule/ShareButton";
 import ShareModal from "./components/share-schedule/ShareModal";
 import GridSchedule from "./components/grid-calendar/GridSchedule";
 import EventGrid from "./components/EventGrid";
-import { shareSchedule } from "./services/sharingServices";
+import { shareMobileImage, shareSchedule } from "./services/sharingServices";
 import SchedulePosterToggle from "./components/utils/SchedulePosterTabs";
 import EventPoster from "./components/EventPoster";
+import LoadSpin from "./components/utils/LoadSpin";
 
 function App() {
   const setScheduleByEids = useEventStore((state) => state.setScheduleByEids);
@@ -34,6 +35,8 @@ function App() {
   const queryParams = new URLSearchParams(location.search);
   const scheduleQuery = queryParams.get("schedule");
   const scheduleType = useEventStore((state) => state.scheduleView);
+  const posterImg = useEventStore((state) => state.posterImg);
+  const setPosterImg = useEventStore((state) => state.setPosterImg);
   console.log({ scheduleQuery });
 
   //const schedule = useEventStore((state) => state.events);
@@ -93,6 +96,60 @@ function App() {
         <BottomNav />
       </footer>
       <ShareModal handler={shareSchedule} />
+      <dialog id="poster-modal" className="modal">
+        <div className="modal-box w-[80vw] h-[80vh]">
+          <h3 className="font-bold text-lg"></h3>
+          <p className="py-4">Share or download poster</p>
+          {posterImg && <img src={posterImg} alt="" />}
+          {!posterImg && (
+            <>
+              <div className="animate-fade-up ">... loading image</div>
+              <div className="animate-spin flex justify-center items-center">
+                <LoadSpin />
+              </div>
+            </>
+          )}
+          <div className="modal-action">
+            <form method="dialog ">
+              <button
+                onClick={() => {
+                  const dialogEl = document.getElementById("poster-modal");
+                  dialogEl.close();
+                }}
+                className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+              >
+                ✕
+              </button>
+              <button
+                onClick={() => {
+                  // document.getElementById("poster-modal");
+
+                  const downloadLink = document.createElement("a");
+                  downloadLink.href = posterImg;
+                  downloadLink.download = "poster.png";
+                  document.body.appendChild(downloadLink);
+                  downloadLink.click();
+                  const dialogEl = document.getElementById("poster-modal");
+                  dialogEl.close();
+                }}
+                className="btn mx-2"
+              >
+                Download
+              </button>
+              <button
+                onClick={() => {
+                  shareMobileImage(posterImg);
+                  const dialogEl = document.getElementById("poster-modal");
+                  dialogEl.close();
+                }}
+                className="btn"
+              >
+                Share
+              </button>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </>
   );
 }
