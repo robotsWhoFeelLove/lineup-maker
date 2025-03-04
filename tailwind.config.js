@@ -6,6 +6,7 @@ export default {
       fontFamily: {
         anta: ['"Anta"', "sans"],
         start: ['"Press Start 2P"', "system-ui"],
+        newAms: ["New Amsterdam", "Cursive"],
       },
     },
   },

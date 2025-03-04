@@ -73,95 +73,98 @@ function App() {
 
   return (
     <>
-      <main className=" mb-auto ">
-        {currentPage == "selector" && <EventSelector events={events} />}
-        {/* {currentPage == "schedule" && <EventSchedule />} */}
-        {currentPage == "schedule" && scheduleType == "schedule" && <EventGrid />}
-        {currentPage == "schedule" && scheduleType == "poster" && <EventPoster />}
-      </main>
-      <footer>
-        <div className=" fixed bottom-[60px]">
-          {schedule && schedule.length > 0 && (
-            <>
-              <div className="flex justify-end">
-                {currentPage == "schedule" && <SchedulePosterToggle />}
-                <ShareButton />
-              </div>
-            </>
-          )}
-          <div className="md:hidden">
-            <DayTabs daysArr={currentPage == "selector" ? getDaysFromArr(events) : getDaysFromArr(schedule)} />
-          </div>
-        </div>
-        <BottomNav />
-      </footer>
-      <ShareModal handler={shareSchedule} />
-      <dialog id="poster-modal" className="modal">
-        <div className="modal-box w-[80vw] h-[80vh]">
-          <h3 className="font-bold text-lg"></h3>
-          {posterImg && <p className="py-4">Success!</p>}
-
-          {posterImg && <img src={posterImg} alt="" />}
-          {!posterImg && (
-            <>
-              <div className="flex items-center mt-48 gap-2">
-                <div className="animate-fade-right animate-once animate-duration-[2000ms] animate-delay-500 animate-ease-in text-xs">
-                  ... loading image
+      {" "}
+      <div className="font-newAms">
+        <main className=" mb-auto font-newAms">
+          {currentPage == "selector" && <EventSelector events={events} />}
+          {/* {currentPage == "schedule" && <EventSchedule />} */}
+          {currentPage == "schedule" && scheduleType == "schedule" && <EventGrid />}
+          {currentPage == "schedule" && scheduleType == "poster" && <EventPoster />}
+        </main>
+        <footer>
+          <div className=" fixed bottom-[60px]">
+            {schedule && schedule.length > 0 && (
+              <>
+                <div className="flex justify-end">
+                  {currentPage == "schedule" && <SchedulePosterToggle />}
+                  <ShareButton />
                 </div>
-                <div className="animate-spin flex justify-center items-center w-14">
-                  <LoadSpin />
-                </div>
-              </div>
-            </>
-          )}
-          <div className="modal-action">
-            <form method="dialog ">
-              <button
-                onClick={() => {
-                  const dialogEl = document.getElementById("poster-modal");
-                  dialogEl.close();
-                  setPosterImg(null);
-                }}
-                className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-              >
-                ✕
-              </button>
-              {posterImg && (
-                <>
-                  <button
-                    onClick={() => {
-                      // document.getElementById("poster-modal");
-
-                      const downloadLink = document.createElement("a");
-                      downloadLink.href = posterImg;
-                      downloadLink.download = "poster.png";
-                      document.body.appendChild(downloadLink);
-                      downloadLink.click();
-                      const dialogEl = document.getElementById("poster-modal");
-                      dialogEl.close();
-                      setPosterImg(null);
-                    }}
-                    className="btn mx-2 hidden md:block"
-                  >
-                    Download
-                  </button>
-                  <button
-                    onClick={() => {
-                      shareMobileImage(posterImg);
-                      const dialogEl = document.getElementById("poster-modal");
-                      dialogEl.close();
-                      setPosterImg(null);
-                    }}
-                    className="btn md:hidden"
-                  >
-                    Share
-                  </button>
-                </>
-              )}
-            </form>
+              </>
+            )}
+            <div className="md:hidden">
+              <DayTabs daysArr={currentPage == "selector" ? getDaysFromArr(events) : getDaysFromArr(schedule)} />
+            </div>
           </div>
-        </div>
-      </dialog>
+          <BottomNav />
+        </footer>
+        <ShareModal handler={shareSchedule} />
+        <dialog id="poster-modal" className="modal">
+          <div className="modal-box w-[80vw] h-[80vh]">
+            <h3 className="font-bold text-lg"></h3>
+            {posterImg && <p className="py-4">Success!</p>}
+
+            {posterImg && <img src={posterImg} alt="" />}
+            {!posterImg && (
+              <>
+                <div className="flex items-center mt-48 gap-2">
+                  <div className="animate-fade-right animate-once animate-duration-[2000ms] animate-delay-500 animate-ease-in text-xs">
+                    ... loading image
+                  </div>
+                  <div className="animate-spin flex justify-center items-center w-14">
+                    <LoadSpin />
+                  </div>
+                </div>
+              </>
+            )}
+            <div className="modal-action">
+              <form method="dialog ">
+                <button
+                  onClick={() => {
+                    const dialogEl = document.getElementById("poster-modal");
+                    dialogEl.close();
+                    setPosterImg(null);
+                  }}
+                  className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                >
+                  ✕
+                </button>
+                {posterImg && (
+                  <>
+                    <button
+                      onClick={() => {
+                        // document.getElementById("poster-modal");
+
+                        const downloadLink = document.createElement("a");
+                        downloadLink.href = posterImg;
+                        downloadLink.download = "poster.png";
+                        document.body.appendChild(downloadLink);
+                        downloadLink.click();
+                        const dialogEl = document.getElementById("poster-modal");
+                        dialogEl.close();
+                        setPosterImg(null);
+                      }}
+                      className="btn mx-2 hidden md:block"
+                    >
+                      Download
+                    </button>
+                    <button
+                      onClick={() => {
+                        shareMobileImage(posterImg);
+                        const dialogEl = document.getElementById("poster-modal");
+                        dialogEl.close();
+                        setPosterImg(null);
+                      }}
+                      className="btn md:hidden"
+                    >
+                      Share
+                    </button>
+                  </>
+                )}
+              </form>
+            </div>
+          </div>
+        </dialog>
+      </div>{" "}
     </>
   );
 }
