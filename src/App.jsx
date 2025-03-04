@@ -99,13 +99,18 @@ function App() {
       <dialog id="poster-modal" className="modal">
         <div className="modal-box w-[80vw] h-[80vh]">
           <h3 className="font-bold text-lg"></h3>
-          <p className="py-4">Share or download poster</p>
+          {posterImg && <p className="py-4">Success!</p>}
+
           {posterImg && <img src={posterImg} alt="" />}
           {!posterImg && (
             <>
-              <div className="animate-fade-up ">... loading image</div>
-              <div className="animate-spin flex justify-center items-center">
-                <LoadSpin />
+              <div className="flex items-center mt-48 gap-2">
+                <div className="animate-fade-right animate-once animate-duration-[2000ms] animate-delay-500 animate-ease-in text-xs">
+                  ... loading image
+                </div>
+                <div className="animate-spin flex justify-center items-center w-14">
+                  <LoadSpin />
+                </div>
               </div>
             </>
           )}
@@ -115,37 +120,44 @@ function App() {
                 onClick={() => {
                   const dialogEl = document.getElementById("poster-modal");
                   dialogEl.close();
+                  setPosterImg(null);
                 }}
                 className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
               >
                 ✕
               </button>
-              <button
-                onClick={() => {
-                  // document.getElementById("poster-modal");
+              {posterImg && (
+                <>
+                  <button
+                    onClick={() => {
+                      // document.getElementById("poster-modal");
 
-                  const downloadLink = document.createElement("a");
-                  downloadLink.href = posterImg;
-                  downloadLink.download = "poster.png";
-                  document.body.appendChild(downloadLink);
-                  downloadLink.click();
-                  const dialogEl = document.getElementById("poster-modal");
-                  dialogEl.close();
-                }}
-                className="btn mx-2"
-              >
-                Download
-              </button>
-              <button
-                onClick={() => {
-                  shareMobileImage(posterImg);
-                  const dialogEl = document.getElementById("poster-modal");
-                  dialogEl.close();
-                }}
-                className="btn"
-              >
-                Share
-              </button>
+                      const downloadLink = document.createElement("a");
+                      downloadLink.href = posterImg;
+                      downloadLink.download = "poster.png";
+                      document.body.appendChild(downloadLink);
+                      downloadLink.click();
+                      const dialogEl = document.getElementById("poster-modal");
+                      dialogEl.close();
+                      setPosterImg(null);
+                    }}
+                    className="btn mx-2 hidden md:block"
+                  >
+                    Download
+                  </button>
+                  <button
+                    onClick={() => {
+                      shareMobileImage(posterImg);
+                      const dialogEl = document.getElementById("poster-modal");
+                      dialogEl.close();
+                      setPosterImg(null);
+                    }}
+                    className="btn md:hidden"
+                  >
+                    Share
+                  </button>
+                </>
+              )}
             </form>
           </div>
         </div>

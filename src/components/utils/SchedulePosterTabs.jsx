@@ -19,7 +19,7 @@ function SchedulePosterToggle() {
       //   role="tablist"
       //   className="border-b tablist tabs-boxed w-screen flex flex-nowrap justify-between p-2 bg-neutral rounded-b-none rounded-tr-none"
     >
-      Poster View <input onChange={handleToggleCheck} type="checkbox" className="toggle" />
+      Poster View <input onChange={handleToggleCheck} type="checkbox" checked={scheduleType == "poster"} className="toggle" />
       {/* <div
         onClick={() => {
           setScheduleType("schedule");

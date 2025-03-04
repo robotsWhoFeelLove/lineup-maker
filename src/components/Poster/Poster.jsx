@@ -23,7 +23,7 @@ function Poster({ poster, schedule, day, handler }) {
   };
 
   return (
-    <div id={posterID + "parent"} className="w-full p-3 pt-0 ">
+    <div id={posterID + "parent"} className="w-full p-3 pt-0 animate-fade-up">
       {/* <div onClick={handleDownload} className="w-full flex justify-end">
         <svg className="" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 16L12 2" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
