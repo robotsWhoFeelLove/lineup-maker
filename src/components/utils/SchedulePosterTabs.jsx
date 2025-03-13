@@ -15,7 +15,7 @@ function SchedulePosterToggle() {
   }
   return (
     <div
-      className="flex items-center gap-2 text-xs justify-end bg-neutral rounded-tl-lg px-2"
+      className="border-t  border-l flex items-center gap-2 text-xs justify-end bg-neutral rounded-tl-lg px-2"
       //   role="tablist"
       //   className="border-b tablist tabs-boxed w-screen flex flex-nowrap justify-between p-2 bg-neutral rounded-b-none rounded-tr-none"
     >

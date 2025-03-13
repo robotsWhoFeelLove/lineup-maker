@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { posters } from "../../assets/posters";
 import { useEventStore } from "../../store/event-store";
 import Poster from "./Poster";
+import { getDayString } from "../../handlers/dateTimeHandlers";
 import { createPoster, createPosterImageArray, setPosterForDownload } from "../../services/sharingServices";
 import PosterImg from "./PosterImg";
 //import { image } from "html2canvas-pro/dist/types/css/types/image";
@@ -27,7 +28,8 @@ function PosterDay({ day, handler }) {
 
   return (
     <>
-      <div className="flex flex-col gap-2 mb-40 ">
+      <div className="flex flex-col gap-2 mb-40 border">
+        <h3 className="text-secondary">{getDayString(day)}</h3>
         {posters.map((poster) => {
           return (
             <Poster

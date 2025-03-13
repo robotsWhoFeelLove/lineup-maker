@@ -85,15 +85,16 @@ export const getDaysFromArr = (events) => {
   let days = [];
   let dayNums = [];
   events.map((event) => {
-    const tempDay = event.DateTime.getHours() > 2 ? event.DateTime.getDay() : event.DateTime.getDay() - 1;
+    const tempDay = event.DateTime.getHours() > 3 || event.DateTime.getHours() == 0 ? event.DateTime.getDay() : event.DateTime.getDay() - 1;
     if (!dayNums.includes(tempDay)) {
       //  console.log(event.DateTime.getDay());
+      if (tempDay === 3) console.log(event);
       days.push(event.DateTime);
       dayNums.push(tempDay);
       //setAllDays((prev) => [...prev, new Date(event.DateTime.getYear(), event.DateTime.getMonth(), event.DateTime.getDay())]);
     }
   });
-  // console.log(days);
+  // console.log({ days, dayNums });
   return days;
 };
 
@@ -122,26 +123,50 @@ export const getMinMaxHours = (events) => {
 export const EVENT_HOURS_ARR = [6, 7, 8, 9, 10, 11, 12, 1];
 
 export const getEventsByDay = (day, events) => {
+  //console.log(day, events);
   if (!events) {
-    events = useEventStore.getState().events;
+    events = [...useEventStore.getState().events];
   }
-  return events
-    .sort((a, b) => a.DateTime - b.DateTime)
-    .map((event, i) => {
-      //console.log(event.DateTime.getDay());
-      event.colIndex = i;
-      return event;
-    })
-    .filter((event) => {
-      let tempHour = event.DateTime.getHours();
-      let tempDay = new Date(event.DateTime);
-      if (tempHour < 2) {
-        tempDay.setDate(tempDay.getDate() - 1);
-      }
-      if (tempHour == 0) tempHour += 12;
-      return tempDay.getDay() == day.getDay();
-    });
+  // console.log({ events });
+  events = events.sort((a, b) => a.DateTime - b.DateTime);
+
+  // console.log({ events });
+
+  let tempEvents = [...events].map((event, i) => {
+    //console.log(event.DateTime.getDay());
+    let tempEvent = { ...event };
+    tempEvent.colIndex = i;
+    return tempEvent;
+  });
+  // console.log({ tempEvents });
+
+  let filteredEvents = tempEvents.filter((event) => {
+    let tempHour = event.DateTime.getHours();
+    let tempDay = new Date(event.DateTime);
+    if (tempHour < 2) {
+      tempDay.setDate(tempDay.getDate() - 1);
+    }
+    if (tempHour == 0) tempHour += 12;
+    //  console.log(tempDay.getDay() == day.getDay());
+    // console.log();
+    return tempDay.getDay() == day.getDay();
+  });
+  //  console.log({ filteredEvents });
+  return filteredEvents;
 };
+
+export function getDaysEvents(day) {
+  const schedule = useEventStore.getState().events;
+
+  let tempSchedule = [...schedule];
+
+  return tempSchedule.filter((event) => {
+    return (
+      (event.DateTime.getDay() == day.getDay() && event.DateTime.getHours() > 2) ||
+      (event.DateTime.getHours() < 3 && event.DateTime.getDay() == day.getDay() + 1)
+    );
+  });
+}
 
 export const getEventsByDayAndHour = (day, hour, events) => {
   if (!events) {
@@ -174,6 +199,36 @@ export const getMinDay = (daysArr) => {
     }
   });
   return minDay;
+};
+
+export const getMinHour = (eventsArr) => {
+  let minHour = 27;
+  eventsArr.map((event) => {
+    //    console.log({ day, minDay });
+    let hour = event.DateTime.getHours();
+    if (hour < 3) {
+      hour += 24;
+    }
+    if (hour < minHour) {
+      minHour = hour;
+    }
+  });
+  return minHour;
+};
+
+export const getMaxHour = (eventsArr) => {
+  let maxHour = 3;
+  eventsArr.map((event) => {
+    //    console.log({ day, minDay });
+    let hour = event.DateTime.getHours();
+    if (hour < 3) {
+      hour += 24;
+    }
+    if (hour > maxHour) {
+      maxHour = hour;
+    }
+  });
+  return maxHour;
 };
 
 // export const getOverlappingEvents = (event, schedule) => {
@@ -293,7 +348,7 @@ export const getEventsWithinHour = (event, schedule) => {
 };
 
 export const createOverlappingEventsList = (events) => {
-  console.log([...events]);
+  // console.log([...events]);
   events = events.sort((a, b) => a.DateTime - b.DateTime);
   let eventsMemo = [];
   let currentEvent = events.shift();

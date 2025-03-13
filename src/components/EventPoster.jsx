@@ -9,7 +9,7 @@ function EventPoster() {
 
   return (
     <>
-      <h2 style={{ fontFamily: "New Amsterdam" }} className="text-3xl w-full text-center">
+      <h2 style={{ fontFamily: "New Amsterdam" }} className="text-3xl w-full text-center my-10">
         Download Posters
       </h2>
       <div className="hidden md:flex justify-around overflow-scroll ">

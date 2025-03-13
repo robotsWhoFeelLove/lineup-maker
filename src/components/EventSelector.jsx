@@ -36,36 +36,11 @@ function EventSelector() {
   return (
     <>
       <div className="md:hidden bg-neutral">{currentDay && <Day currentDay={currentDay} />}</div>
-      <div className="hidden md:flex gap-2 ">
+      <div className="hidden md:flex gap-2 z-20">
         {getDaysFromArr(events).map((day) => {
           return <Day key={"day-select" + day.getDay()} currentDay={day} />;
         })}
       </div>
-      {/* {events && <DayTabs daysArr={getDaysFromArr(events)} />} */}
-      {/* <div role="tablist" className="tablist tabs-boxed">
-        {daysArr &&
-          daysArr.length > 0 &&
-          daysArr.map((day) => {
-            // console.log(day[0].DateTime.getDay());
-            return (
-              <div
-                key={`dayOfWeek:${day[0].DateTime.getDay()}`}
-                role="tab"
-                className={"tab " + (day == currentDay && "tab-active")}
-                onClick={() => {
-                  //   console.log(day[0]);
-                  setCurrentDay(day);
-                }}
-              >
-                {day[0].DateTime.toLocaleDateString("en-US", {
-                  weekday: "long",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </div>
-            );
-          })}
-      </div> */}
     </>
   );
 }

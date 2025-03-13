@@ -14,6 +14,7 @@ function EventSchedule() {
   const currentDay = useEventStore((state) => state.currentDay);
   // console.log(schedule);
   const makeSchedule = useEventStore((state) => state.setSchedule);
+
   // const schedule = useEventStore((state) => state.events);
   //const HOURS = getHoursArr(events)
   //   mockEvents.map((el) => {

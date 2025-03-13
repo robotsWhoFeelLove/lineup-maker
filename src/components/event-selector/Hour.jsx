@@ -4,15 +4,22 @@ import { events } from "../../assets/events";
 import { useEventStore } from "../../store/event-store";
 import { getEventsByDayAndHour } from "../../handlers/dateTimeHandlers";
 
-function Hour({ day, hour }) {
+function Hour({ day, hour, currentHour, setCurrentHour }) {
   const dayWidth = useEventStore((state) => state.dayWidth);
   return (
     <>
       {events.length > 0 && (
-        <div className="collapse collapse-arrow bg-base-300 text-base-content outline ">
-          <input type="radio" name="my-accordion-2" defaultChecked />
+        <div
+          onClick={() => {
+            setCurrentHour(hour);
+          }}
+          className={
+            "animate-fade-up collapse collapse-arrow bg-base-300 text-base-content outline " + (currentHour == hour ? " collapse-open " : "")
+          }
+        >
+          {/* <input type="radio" name="my-accordion-2" defaultChecked /> */}
           <div className="collapse-title text-3xl text-base-content font-medium">
-            {String(hour) + (hour < 12 && hour > 2 ? " PM" : " AM")}
+            {String(hour) + (hour < 12 && hour > 1 ? " PM" : " AM")}
             {/* {events[0].DateTime.toLocaleString("en-US", {
               hour: "numeric",
             })} */}

@@ -1,8 +1,8 @@
 import GridEvent from "./GridEvent";
 
-function OverlappingEventsBlock({ events }) {
+function OverlappingEventsBlock({ events, hoursArr }) {
   let colSpan;
-  console.log({ events });
+  // console.log({ events });
   if (events.length == 1) {
     colSpan = 12;
   } else if (events.length == 2) {
@@ -14,7 +14,7 @@ function OverlappingEventsBlock({ events }) {
   return (
     <>
       {events.map((event, i) => {
-        return <GridEvent key={"grid-event" + event.Name} event={event} colSpan={colSpan} eventIndex={i} />;
+        return <GridEvent key={"grid-event" + event.Name} event={event} colSpan={colSpan} eventIndex={i} hoursArr={hoursArr} />;
       })}
     </>
   );

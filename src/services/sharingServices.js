@@ -26,7 +26,7 @@ export async function createImage(item, callback) {
 }
 
 export async function createBlob(item, callback) {
-  console.log(item);
+  //  console.log(item);
   let node = document.getElementById("test");
   node.innerHTML = "";
   const parent = document.getElementById(item);
@@ -36,7 +36,7 @@ export async function createBlob(item, callback) {
   await toBlob(node);
   await toBlob(node);
   await toBlob(node).then(function (blob) {
-    console.log({ blob });
+    //  console.log({ blob });
     callback(blob);
   });
   //   node.innerHTML = "";
@@ -93,14 +93,14 @@ export async function downloadDesktop(item) {
 }
 export async function createPosterMobile(posterID) {
   const parent = document.getElementById(posterID + "parent");
-  console.log(parent);
+  //  console.log(parent);
   let node = document.getElementById("test");
   node.appendChild(parent.firstChild);
   console.log(node.ownerDocument.defaultView);
   await htmlToImage.toPng(node);
   await htmlToImage.toPng(node);
   const uri = await htmlToImage.toPng(node);
-  console.log(uri);
+  // console.log(uri);
   //   const dataUrl = await htmlToImage.toPng(node);
   //   //await htmlToImage.toBlob(dataUrl);
   //   await htmlToImage.toBlob(uri);
@@ -116,12 +116,13 @@ export async function createPosterMobile(posterID) {
 
 export async function createPoster(posterID, containerClass = "") {
   //const container = document.querySelector("." + containerClass);
-  const parent = document.getElementById(posterID + "parent");
-  console.log({ parent });
+  const newNode = document.getElementById(posterID).cloneNode(true);
+  //  console.log({ newNode });
   let node = document.getElementById("test");
   // console.log(parent.firstChild);
-  if (!parent || !parent.firstChild) return;
-  node.appendChild(document.getElementById(posterID));
+  if (!newNode) return;
+  newNode.id = posterID + "new" + new Date().getMilliseconds();
+  node.appendChild(newNode);
   await htmlToImage.toPng(node);
   await htmlToImage.toPng(node);
   let poster = await htmlToImage.toPng(node);
@@ -138,7 +139,7 @@ export async function createPoster(posterID, containerClass = "") {
 
 export async function setPosterForDownload(posterID, setter) {
   const imgFile = await createPoster(posterID);
-  console.log(imgFile);
+  //  console.log(imgFile);
   setter(imgFile);
 }
 
@@ -151,7 +152,7 @@ export async function createPosterImageArray(postersArr, containerClass, day, se
     tempArr.push(currentImg);
     i++;
   }
-  console.log(tempArr);
+  //console.log(tempArr);
   setter(tempArr);
 }
 
@@ -163,8 +164,8 @@ export function createPoster2(posterId) {
     canvas.width = 500;
     canvas.height = 800;
 
-    console.log(canvas);
-    console.log("I ran");
+    //console.log(canvas);
+    // console.log("I ran");
     const a = document.createElement("a");
     a.href = canvas.toDataURL("image/jpeg");
     a.download = "image.jpeg";
@@ -189,7 +190,7 @@ export function createAndDownloadImage(imageId) {
   //   console.log({ dataUrl });
   //   download(dataUrl, "Lineup.png");
   toBlob(document.getElementById(imageId)).then(function (blob) {
-    console.log(blob);
+    //  console.log(blob);
   });
 }
 
@@ -218,13 +219,13 @@ export function createPoster3(posterId) {
 export async function sharePoster(blob) {
   //const setPosterImg = useEventStore((state) => state.setPosterImg);
   //const filesArr = await convertToBlob(url);
-  console.log(blob);
+  //console.log(blob);
   const filesArr = [new File([blob], "MyLineup.png", { type: blob.type })];
   try {
     await navigator.share({
       files: filesArr,
     });
-    console.log("Shared successfully");
+    //  console.log("Shared successfully");
   } catch (err) {
     console.error("error:", err.message);
   }
@@ -251,11 +252,11 @@ export async function shareMobile(item) {
   document.getElementById("test").innerHTML = "";
 }
 
-async function convertToBlob(url) {
-  const blob = await (await fetch(url)).blob();
-  const filesArr = [new File([blob], "MyLineup.png", { type: "png" })];
-  return filesArr;
-}
+// async function convertToBlob(url) {
+//   const blob = await (await fetch(url)).blob();
+//   const filesArr = [new File([blob], "MyLineup.png", { type: "png" })];
+//   return filesArr;
+// }
 
 export async function downloadPoster(url) {
   download(url, "Lineup.png");

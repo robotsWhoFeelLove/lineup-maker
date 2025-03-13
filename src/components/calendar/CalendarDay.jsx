@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 import { mockEvents } from "../../assets/mock-events";
-import { EVENT_HOURS_ARR } from "../../handlers/dateTimeHandlers";
+import { EVENT_HOURS_ARR, getEventsByDay } from "../../handlers/dateTimeHandlers";
 import { useEventStore } from "../../store/event-store";
 import CalendarHour from "./CalendarHour";
 
 function CalendarDay({ day }) {
+  const schedule = useEventStore((state) => state.events);
+
   const HOURS = EVENT_HOURS_ARR;
+
   return (
     <>
       <div className="">

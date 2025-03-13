@@ -31,14 +31,17 @@ function Poster({ poster, schedule, day, handler }) {
           <path d="M20 16V22H4V16" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div> */}
-      <div className="text-xs">tap poster to generate image</div>
+      <div className="text-xs flex gap-1">
+        <span className="md:hidden">tap </span>
+        <span className="hidden md:block">click </span> <span>poster to generate image</span>
+      </div>
       <div
-        className="w-full"
+        className="w-full cursor-pointer"
         id={posterID}
         onClick={() => {
-          console.log("starting");
+          //  console.log("starting");
           setPosterForDownload("poster" + day.getDay() + poster.Title, setPosterImg);
-          console.log("image-created");
+          //  console.log("image-created");
           document.getElementById("poster-modal").showModal();
         }}
       >

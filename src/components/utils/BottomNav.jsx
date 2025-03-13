@@ -3,8 +3,12 @@ import { useEventStore } from "../../store/event-store";
 function BottomNav() {
   const currentPage = useEventStore((state) => state.currentPage);
   const setCurrentPage = useEventStore((state) => state.setCurrentPage);
+  const schedule = useEventStore((state) => state.events);
+  const currentDay = useEventStore((state) => state.currentDay);
+  const setCurrentDay = useEventStore((state) => state.setCurrentDay);
+
   return (
-    <div className="btm-nav fixed bottom-0 bg-neutral">
+    <div className="btm-nav border-t fixed bottom-0 bg-neutral text-neutral-content">
       {/* <button>
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path
@@ -19,7 +23,7 @@ function BottomNav() {
         onClick={() => {
           setCurrentPage("selector");
         }}
-        className={currentPage == "selector" && " active"}
+        className={currentPage == "selector" ? " active text-primary drop-shadow-glow " : ""}
       >
         Modify Schedule
         {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -28,9 +32,21 @@ function BottomNav() {
       </button>
       <button
         onClick={() => {
+          if (schedule.length == 0) {
+            return;
+          }
+          if (
+            !schedule.some((event) => {
+              //  console.log({ event, currentDay });
+              return event.DateTime.getDay() == currentDay.getDay();
+            })
+          ) {
+            //  console.log(schedule);
+            setCurrentDay(schedule[0].DateTime);
+          }
           setCurrentPage("schedule");
         }}
-        className={currentPage == "schedule" && " active"}
+        className={currentPage == "schedule" ? " active text-primary drop-shadow-glow " : ""}
       >
         View Schedule
       </button>

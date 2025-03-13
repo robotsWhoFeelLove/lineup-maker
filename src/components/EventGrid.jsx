@@ -13,7 +13,7 @@ function EventGrid() {
       </div>
       <div className="hidden md:flex ">
         {getDaysFromArr(schedule).map((day) => {
-          return <GridSchedule day={day} />;
+          return <GridSchedule key={"grid-schedule-" + day.getDay()} day={day} />;
         })}
       </div>
     </>

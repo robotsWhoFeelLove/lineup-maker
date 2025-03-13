@@ -1,6 +1,6 @@
 import { countOverlappingEvents, findOverlappingEvents, getEventsIndexWithinHour } from "../../handlers/dateTimeHandlers";
-
-function GridEvent({ event, colSpan, eventIndex }) {
+import { getDisplayDate } from "../event-selector/Event";
+function GridEvent({ event, colSpan, eventIndex, hoursArr }) {
   //   const overlaps = findOverlappingEvents(event, schedule).length;
   //   // countOverlappingEvents(event, schedule);
   //   let eventIndex = getEventsIndexWithinHour(event, schedule);
@@ -9,11 +9,21 @@ function GridEvent({ event, colSpan, eventIndex }) {
   let eventRow = event.DateTime.getHours();
   //console.log((eventIndex % 3) * colSpan);
 
-  if (eventRow < 2) {
-    eventRow += 7;
-  } else {
-    eventRow -= 17;
+  if (eventRow < 12) {
+    eventRow += 24;
   }
+
+  //console.log(eventRow, event.Name);
+
+  hoursArr.map((hour, i) => {
+    let test = true;
+    if (hour == eventRow && test) {
+      eventRow = i + 1;
+      test = false;
+    }
+  });
+  //console.log(eventRow);
+
   const eventBG = [" bg-primary text-primary-content", " bg-secondary text-secondary-content", " bg-accent text-accent-content"];
   //   let eventHorizontalLength = 12;
   //   if (overlaps == 2) {
@@ -40,6 +50,7 @@ function GridEvent({ event, colSpan, eventIndex }) {
     >
       <h3 className="font-bold">{event.Name}</h3>
       <div className="pb-1">@{event.Venue}</div>
+      <div>{getDisplayDate(event.DateTime)}</div>
       <div className="">
         <a className="link" href={"https://maps.google.com/?q=" + event.Address} target="_blank" rel="noreferrer">
           {event.Address.length > 30 ? event.Address.slice(0, 20) + "..." : event.Address}

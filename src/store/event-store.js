@@ -53,7 +53,7 @@ export const useEventStore = create((set) => ({
     set((state) => ({ events: state.events.filter((event) => event != eventToRemove) }));
   },
   handleSchedule: (event) => {
-    console.log(event);
+    //console.log(event);
     set((state) => ({ events: state.events.includes(event) ? state.events.filter((myEvent) => myEvent != event) : [...state.events, event] }));
   },
   setSchedule: (eventArr) => {
